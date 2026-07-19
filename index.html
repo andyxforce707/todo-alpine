@@ -34,7 +34,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap" rel="stylesheet" />
 
-    <!-- <style>
+    <style>
       * {
         font-family: 'Google Sans', sans-serif;
       }
@@ -42,26 +42,22 @@
       .short_active {
         border: 2px dashed rgba(128, 128, 128, 0.43);
       }
-    </style> -->
+    </style>
+
   </head>
-  <body x-data="Todos" class="w-full min-h-screen flex flex-col px-30 py-15 gap-5" :class="{'bg-gray-900':darkMode,'bg-gray-50':!darkMode}"> 
-    <div class="todo_form flex flex-col rounded-lg shadow-md gap-3 px-5 py-3"
+  <body x-data="Todos" class="w-full min-h-screen flex flex-col px-30 py-15 gap-5 transition duration-700" :class="{'bg-linear-to-r from-gray-900 via-gray-900 to-gray-800':darkMode,'bg-linear-to-r from-gray-100 to-gray-50':!darkMode}"> 
+    <div class="todo_form flex flex-col rounded-lg shadow-md gap-3 px-5 py-3 transition duration-700"
       :class="{'bg-gray-800':darkMode,'bg-white':!darkMode}"
     >
       <div class="main_title mb-3 flex justify-between items-center">
         <h1 class="text-purple-500 text-3xl">Alpine Todo</h1>
 
         <div class="theme text-xs flex gap-2">
-          <button class="rounded-lg text-purple-500 transition cursor-pointer px-2 py-1"
+          <button class="rounded-lg text-purple-500 transition cursor-pointer px-2 py-1 duration-700"
             :class="darkMode ? 'bg-gray-900 text-purple-500 hover:bg-gray-700' : 'bg-gray-100 hover:bg-purple-100'"
             @click="darkMode = !darkMode"
             x-text="darkMode ? 'terang' : 'gelap'"
           ></button>
-          <!-- <button class="rounded-lg text-purple-500 transition cursor-pointer px-2 py-1"
-            :class="darkMode ? 'bg-gray-900 text-purple-500 hover:bg-gray-700' : 'bg-gray-100 hover:bg-purple-100'"
-            x-show="!darkMode"
-            @click="darkMode = true"
-          >gelap</button> -->
         </div>
       </div>
 
@@ -75,7 +71,7 @@
           :class="errors.todo ? 'border-red-500 placeholder:text-red-300 ring-red-500/20' : 'border-purple-500 placeholder:text-purple-300 ring-purple-500/20'"
         />
         <button
-          class="px-4 py-2 bg-purple-500 transition font-bold hover:bg-purple-600 rounded-lg outline-none focus:ring-3 ring-purple-500/20 cursor-pointer"
+          class="px-4 py-2 bg-purple-500 font-bold hover:bg-purple-600 rounded-lg outline-none focus:ring-3 ring-purple-500/20 cursor-pointer transition duration-700"
           @click="add()"
           x-text="edit_id ? 'Edit' : '+'"
           :class="darkMode ? 'text-gray-800' : 'text-white' "
@@ -94,8 +90,6 @@
           <button
             class="text-xs px-2 py-1 rounded-lg transition cursor-pointer outline-none focus:ring-3 ring-emerald-500/20"
             @click="filter = 'completed';setFilter('completed')"
-
-
             :class="filter == 'completed' ? (darkMode ? 'bg-emerald-500 text-gray-800 hover:bg-emerald-600' : 'bg-emerald-500 text-white hover:bg-emerald-600'):(darkMode ? 'text-gray-400 bg-gray-900 hover:bg-gray-700' : 'text-gray-500 bg-gray-100 hover:bg-gray-200')" 
           >
             Completed
@@ -103,7 +97,6 @@
           <button
             class="text-xs px-2 py-1 rounded-lg transition cursor-pointer outline-none focus:ring-3 ring-purple-500/20"
             @click="filter = 'pending';setFilter('pending')"
-
             :class="filter == 'pending' ? (darkMode ? 'bg-purple-500 text-gray-800 hover:bg-purple-600' : 'bg-purple-500 text-white hover:bg-purple-600'):(darkMode ? 'text-gray-400 bg-gray-900 hover:bg-gray-700' : 'text-gray-500 bg-gray-100 hover:bg-gray-200')"            
           >
             Pending
@@ -113,11 +106,7 @@
         <div class="flex gap-2">
           <button
             class="text-xs px-2 py-1 rounded-lg transition cursor-pointer outline-none focus:ring-3 ring-purple-500/20"
-
-
             :class="divide == 2 ? (darkMode ? 'bg-purple-500 text-gray-800 hover:bg-purple-600' : 'bg-purple-500 text-white hover:bg-purple-600'):(darkMode ? 'bg-gray-900 text-gray-400 hover:bg-gray-700' : 'bg-gray-100 text-gray-400 hover:bg-gray-200')"  
-
-
             @click="divide = 2"
           >
             /2
@@ -133,20 +122,18 @@
       </div>
     </div>
 
-    <div class="todo_list flex gap-3 flex-col p-2 shadow-md rounded-lg px-5 py-3"
+    <div class="todo_list flex gap-3 flex-col p-2 shadow-md rounded-lg px-5 py-3 transition duration-700"
     :class="{'bg-gray-800':darkMode,'bg-white':!darkMode}"
     >
       <h3 class="text-xl text-purple-500">Daftar Aktifitas</h3>
 
       <div class="grid gap-2 mt-2 pb-4" :class="divide == 2 ? 'grid-cols-2' : 'grid-cols-3'" id="todo_list">
         <template x-for="(task,index) in todos" :key="task.id">
-          <!-- <div x-transition class="todo_card flex justify-between border px-4 py-2 rounded-lg group" :class="task.is_completed && darkMode ? 'border-emerald-400 hover:border-emerald-500 bg-gray-900' : 'border-purple-400 hover:border-purple-500 bg-gray-800'"
-          > -->
 
           <div x-transition 
-          class="todo_card flex justify-between border px-4 py-2 rounded-lg group"
+          class="todo_card flex justify-between border px-4 py-2 rounded-lg group transition duration-700"
           
-          :class="task.is_completed ? (darkMode ? 'border-emerald-400 hover:border-emerald-500 bg-gray-800' : 'border-emerald-400 hover:border-emerald-500 bg-white') : (darkMode ? 'border-purple-400 hover:border-purple-500 bg-gray-800' : 'border-emerald-400 hover:border-emerald-500 bg-white')"
+          :class="task.is_completed ? (darkMode ? 'border-emerald-400 hover:border-emerald-500 bg-gray-800' : 'border-emerald-400 hover:border-emerald-500 bg-white') : (darkMode ? 'border-purple-400 hover:border-purple-500 bg-gray-800' : 'border-purple-400 hover:border-purple-500 bg-white')"
           >
 
             <p x-text="task.task" @click.stop="todo = task.task;edit_id = task.id" :class="task.is_completed ? 'text-emerald-500' : 'text-purple-500'"></p>
@@ -199,33 +186,26 @@
               localStorage.setItem('todos', JSON.stringify(this.todos));
             }); // jika this.todos ada perubahan, maka simpan di lokal storage
 
+            // layout
             if (localStorage.getItem('layout')) {
               this.divide = localStorage.getItem('layout');
             } // siapkan layout grid
-
             this.$watch('divide', (val) => {
               localStorage.setItem('layout', val);
             }); // atur layout grid dan simpan
 
             // dark mode
-            // if(localStorage.getItem('theme')) {
-            //   this.darkMode = localStorage.getItem('theme');
-            //   console.log(this.darkMode);
-            // }
-
             this.$watch('darkMode',(val)=>{
               localStorage.setItem('theme',val);
-              // this.darkMode = localStorage.getItem('theme');
-
-              console.log('watch:'+localStorage.getItem('theme'));
             });
 
-
+            // focus input
             this.$nextTick(() => {
               this.$refs.todo.focus();
             }); // focus pada input todo ketika halaman pertama kali dimuat
           },
 
+          // reset from
           resetForm() {
             this.edit_id = '';
             this.todo = '';
@@ -241,6 +221,7 @@
             }
 
             this.is_loading = true;
+
             if (this.edit_id) {
               let item = this.getItem(this.edit_id);
               let index = this.todos.indexOf(item);
@@ -257,8 +238,8 @@
               is_completed: false,
             });
             notyf.success('Aktifitas berhasil ditambahkan!');
-
             this.resetForm();
+
           },
 
           // get id
@@ -314,6 +295,7 @@
               this.todos = this.backup_todos;
             }
           },
+
         }));
       });
 
@@ -323,7 +305,6 @@
       const shortable_options = {
         group: 'todo_list_item',
         sort: true,
-        // ghostClass: 'sortable-ghost',
         ghostClass: 'short_active',
         onEnd: function (evt) {
           console.log('shortableJs : Reordered successfully!');
