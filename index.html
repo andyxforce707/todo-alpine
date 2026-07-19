@@ -83,7 +83,8 @@
           <button
             class="text-xs px-2 py-1 rounded-lg transition cursor-pointer outline-none focus:ring-3 ring-purple-500/20"
             @click="filter = 'all';setFilter('all')"
-            :class="filter == 'all' ? (darkMode ? 'bg-purple-500 text-gray-800 hover:bg-purple-600' : 'bg-purple-500 text-white hover:bg-purple-600'):(darkMode ? 'text-gray-400 bg-gray-900 hover:bg-gray-700' : 'text-gray-500 bg-gray-100 hover:bg-gray-200')"  
+            :class="filter == 'all' ? (darkMode ? 'bg-purple-500 text-gray-800 hover:bg-purple-600' : 'bg-purple-500 text-white hover:bg-purple-600'):(darkMode ? 'text-gray-400 bg-gray-900 hover:bg-gray-700' : 'text-gray-500 bg-gray-100 hover:bg-gray-200')"
+            x-text="'All ('+backup_todos.length+')'"  
           >
             All
           </button>
@@ -91,15 +92,17 @@
             class="text-xs px-2 py-1 rounded-lg transition cursor-pointer outline-none focus:ring-3 ring-emerald-500/20"
             @click="filter = 'completed';setFilter('completed')"
             :class="filter == 'completed' ? (darkMode ? 'bg-emerald-500 text-gray-800 hover:bg-emerald-600' : 'bg-emerald-500 text-white hover:bg-emerald-600'):(darkMode ? 'text-gray-400 bg-gray-900 hover:bg-gray-700' : 'text-gray-500 bg-gray-100 hover:bg-gray-200')" 
+            x-text="'Completed'"
           >
-            Completed
+            
           </button>
           <button
             class="text-xs px-2 py-1 rounded-lg transition cursor-pointer outline-none focus:ring-3 ring-purple-500/20"
             @click="filter = 'pending';setFilter('pending')"
-            :class="filter == 'pending' ? (darkMode ? 'bg-purple-500 text-gray-800 hover:bg-purple-600' : 'bg-purple-500 text-white hover:bg-purple-600'):(darkMode ? 'text-gray-400 bg-gray-900 hover:bg-gray-700' : 'text-gray-500 bg-gray-100 hover:bg-gray-200')"            
+            :class="filter == 'pending' ? (darkMode ? 'bg-purple-500 text-gray-800 hover:bg-purple-600' : 'bg-purple-500 text-white hover:bg-purple-600'):(darkMode ? 'text-gray-400 bg-gray-900 hover:bg-gray-700' : 'text-gray-500 bg-gray-100 hover:bg-gray-200')"
+            x-text="'Pending'"         
           >
-            Pending
+            
           </button>
         </div>
 
