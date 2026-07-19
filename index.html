@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,6 +9,7 @@
 
     <!-- Tailwind -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    </style>
 
     <!-- AOS -->
     <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
@@ -33,7 +34,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap" rel="stylesheet" />
 
-    <style>
+    <!-- <style>
       * {
         font-family: 'Google Sans', sans-serif;
       }
@@ -41,12 +42,27 @@
       .short_active {
         border: 2px dashed rgba(128, 128, 128, 0.43);
       }
-    </style>
+    </style> -->
   </head>
-  <body x-data="Todos" class="w-full bg-gray-50 min-h-screen flex flex-col px-30 py-15 gap-5">
-    <div class="todo_form bg-white flex flex-col rounded-lg bg-white shadow-md gap-3 px-5 py-3 bg-linear-to-r from-purple-50 via-purple-50 to-white">
-      <div class="main_title mb-3">
+  <body x-data="Todos" class="w-full min-h-screen flex flex-col px-30 py-15 gap-5" :class="{'bg-gray-900':darkMode,'bg-gray-50':!darkMode}"> 
+    <div class="todo_form flex flex-col rounded-lg shadow-md gap-3 px-5 py-3"
+      :class="{'bg-gray-800':darkMode,'bg-white':!darkMode}"
+    >
+      <div class="main_title mb-3 flex justify-between items-center">
         <h1 class="text-purple-500 text-3xl">Alpine Todo</h1>
+
+        <div class="theme text-xs flex gap-2">
+          <button class="rounded-lg text-purple-500 transition cursor-pointer px-2 py-1"
+            :class="darkMode ? 'bg-gray-900 text-purple-500 hover:bg-gray-700' : 'bg-gray-100 hover:bg-purple-100'"
+            @click="darkMode = !darkMode"
+            x-text="darkMode ? 'terang' : 'gelap'"
+          ></button>
+          <!-- <button class="rounded-lg text-purple-500 transition cursor-pointer px-2 py-1"
+            :class="darkMode ? 'bg-gray-900 text-purple-500 hover:bg-gray-700' : 'bg-gray-100 hover:bg-purple-100'"
+            x-show="!darkMode"
+            @click="darkMode = true"
+          >gelap</button> -->
+        </div>
       </div>
 
       <div class="flex justify-end gap-2 w-full">
@@ -59,10 +75,10 @@
           :class="errors.todo ? 'border-red-500 placeholder:text-red-300 ring-red-500/20' : 'border-purple-500 placeholder:text-purple-300 ring-purple-500/20'"
         />
         <button
-          class="px-4 py-2 bg-purple-500 transition text-white font-bold hover:bg-purple-600 rounded-lg outline-none focus:ring-3 ring-purple-500/20"
+          class="px-4 py-2 bg-purple-500 transition font-bold hover:bg-purple-600 rounded-lg outline-none focus:ring-3 ring-purple-500/20 cursor-pointer"
           @click="add()"
           x-text="edit_id ? 'Edit' : '+'"
-          :class="is_loading ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer opacity-100'"
+          :class="darkMode ? 'text-gray-800' : 'text-white' "
         ></button>
       </div>
 
@@ -71,21 +87,24 @@
           <button
             class="text-xs px-2 py-1 rounded-lg transition cursor-pointer outline-none focus:ring-3 ring-purple-500/20"
             @click="filter = 'all';setFilter('all')"
-            :class="filter == 'all' ? 'bg-purple-500 text-white hover:bg-purple-600' : 'text-gray-500 bg-gray-100 hover:bg-gray-200'"
+            :class="filter == 'all' ? (darkMode ? 'bg-purple-500 text-gray-800 hover:bg-purple-600' : 'bg-purple-500 text-white hover:bg-purple-600'):(darkMode ? 'text-gray-400 bg-gray-900 hover:bg-gray-700' : 'text-gray-500 bg-gray-100 hover:bg-gray-200')"  
           >
             All
           </button>
           <button
-            class="text-xs px-2 py-1 rounded-lg transition cursor-pointer outline-none focus:ring-3 ring-purple-500/20"
+            class="text-xs px-2 py-1 rounded-lg transition cursor-pointer outline-none focus:ring-3 ring-emerald-500/20"
             @click="filter = 'completed';setFilter('completed')"
-            :class="filter == 'completed' ? 'bg-emerald-500 text-white hover:bg-emerald-600' : 'text-gray-500 bg-gray-100 hover:bg-gray-200'"
+
+
+            :class="filter == 'completed' ? (darkMode ? 'bg-emerald-500 text-gray-800 hover:bg-emerald-600' : 'bg-emerald-500 text-white hover:bg-emerald-600'):(darkMode ? 'text-gray-400 bg-gray-900 hover:bg-gray-700' : 'text-gray-500 bg-gray-100 hover:bg-gray-200')" 
           >
             Completed
           </button>
           <button
             class="text-xs px-2 py-1 rounded-lg transition cursor-pointer outline-none focus:ring-3 ring-purple-500/20"
             @click="filter = 'pending';setFilter('pending')"
-            :class="filter == 'pending' ? 'bg-purple-500 text-white hover:bg-purple-600' : 'text-gray-500 bg-gray-100 hover:bg-gray-200'"
+
+            :class="filter == 'pending' ? (darkMode ? 'bg-purple-500 text-gray-800 hover:bg-purple-600' : 'bg-purple-500 text-white hover:bg-purple-600'):(darkMode ? 'text-gray-400 bg-gray-900 hover:bg-gray-700' : 'text-gray-500 bg-gray-100 hover:bg-gray-200')"            
           >
             Pending
           </button>
@@ -94,14 +113,18 @@
         <div class="flex gap-2">
           <button
             class="text-xs px-2 py-1 rounded-lg transition cursor-pointer outline-none focus:ring-3 ring-purple-500/20"
-            :class="divide == 2 ? 'bg-purple-500 text-white hover:bg-purple-600' : 'bg-gray-100 text-gray-400 hover:bg-gray-200'"
+
+
+            :class="divide == 2 ? (darkMode ? 'bg-purple-500 text-gray-800 hover:bg-purple-600' : 'bg-purple-500 text-white hover:bg-purple-600'):(darkMode ? 'bg-gray-900 text-gray-400 hover:bg-gray-700' : 'bg-gray-100 text-gray-400 hover:bg-gray-200')"  
+
+
             @click="divide = 2"
           >
             /2
           </button>
           <button
             class="text-xs px-2 py-1 rounded-lg transition cursor-pointer outline-none focus:ring-3 ring-purple-500/20"
-            :class="divide == 3 ? 'bg-purple-500 text-white hover:bg-purple-600' : 'bg-gray-100 text-gray-400 hover:bg-gray-200'"
+            :class="divide == 3 ? (darkMode ? 'bg-purple-500 text-gray-800 hover:bg-purple-600' : 'bg-purple-500 text-white hover:bg-purple-600'):(darkMode ? 'bg-gray-900 text-gray-400 hover:bg-gray-700' : 'bg-gray-100 text-gray-400 hover:bg-gray-200')"  
             @click="divide = 3"
           >
             /3
@@ -110,13 +133,23 @@
       </div>
     </div>
 
-    <div class="todo_list flex gap-3 flex-col bg-white p-2 shadow-md rounded-lg px-5 py-3">
+    <div class="todo_list flex gap-3 flex-col p-2 shadow-md rounded-lg px-5 py-3"
+    :class="{'bg-gray-800':darkMode,'bg-white':!darkMode}"
+    >
       <h3 class="text-xl text-purple-500">Daftar Aktifitas</h3>
 
       <div class="grid gap-2 mt-2 pb-4" :class="divide == 2 ? 'grid-cols-2' : 'grid-cols-3'" id="todo_list">
         <template x-for="(task,index) in todos" :key="task.id">
-          <div x-transition class="todo_card bg-white flex justify-between border px-4 py-2 rounded-lg group" :class="task.is_completed ? 'border-emerald-400 hover:border-emerald-500' : 'border-purple-400 hover:border-purple-500'">
-            <p x-text="task.task" class="" @click.stop="todo = task.task;edit_id = task.id" :class="task.is_completed ? 'text-emerald-500' : 'text-purple-500'"></p>
+          <!-- <div x-transition class="todo_card flex justify-between border px-4 py-2 rounded-lg group" :class="task.is_completed && darkMode ? 'border-emerald-400 hover:border-emerald-500 bg-gray-900' : 'border-purple-400 hover:border-purple-500 bg-gray-800'"
+          > -->
+
+          <div x-transition 
+          class="todo_card flex justify-between border px-4 py-2 rounded-lg group"
+          
+          :class="task.is_completed ? (darkMode ? 'border-emerald-400 hover:border-emerald-500 bg-gray-800' : 'border-emerald-400 hover:border-emerald-500 bg-white') : (darkMode ? 'border-purple-400 hover:border-purple-500 bg-gray-800' : 'border-emerald-400 hover:border-emerald-500 bg-white')"
+          >
+
+            <p x-text="task.task" @click.stop="todo = task.task;edit_id = task.id" :class="task.is_completed ? 'text-emerald-500' : 'text-purple-500'"></p>
 
             <div class="flex flex-col gap-2 justify-between">
               <button class="text-lg opacity-0 text-gray-400 cursor-pointer transition hover:text-gray-700 outline-none rounded-lg focus:ring-2 ring-purple-500/20 group-hover:opacity-100" @click="erase(task.id)">&Cross;</button>
@@ -127,8 +160,10 @@
                 <button
                   @click="toggle(task.id)"
                   x-text="task.is_completed ? 'selesai' : 'aktif'"
-                  class="text-xs text-white rounded-lg px-2 py-1 cursor-pointer transition outline-none focus:ring-3"
-                  :class="task.is_completed ? 'bg-emerald-500 hover:bg-emerald-600 ring-emerald-500/20' : 'bg-purple-500 hover:bg-purple-600 ring-purple-500/20'"
+                  class="text-xs rounded-lg px-2 py-1 cursor-pointer transition outline-none focus:ring-3"
+
+
+                  :class="task.is_completed ? (darkMode ? 'bg-emerald-500 hover:bg-emerald-600 ring-emerald-500/20 text-gray-800' : 'bg-emerald-500 hover:bg-emerald-600 ring-emerald-500/20 text-white'):(darkMode ? 'bg-purple-500 hover:bg-purple-600 ring-purple-500/20 text-gray-800' : 'bg-purple-500 hover:bg-purple-600 ring-purple-500/20 text-white')"
                 ></button>
               </div>
             </div>
@@ -146,6 +181,7 @@
           todo: '',
           edit_id: '',
           divide: 3,
+          darkMode:localStorage.getItem('theme') === 'true',
           is_loading: false,
           filter: 'all',
           todos: [],
@@ -170,6 +206,20 @@
             this.$watch('divide', (val) => {
               localStorage.setItem('layout', val);
             }); // atur layout grid dan simpan
+
+            // dark mode
+            // if(localStorage.getItem('theme')) {
+            //   this.darkMode = localStorage.getItem('theme');
+            //   console.log(this.darkMode);
+            // }
+
+            this.$watch('darkMode',(val)=>{
+              localStorage.setItem('theme',val);
+              // this.darkMode = localStorage.getItem('theme');
+
+              console.log('watch:'+localStorage.getItem('theme'));
+            });
+
 
             this.$nextTick(() => {
               this.$refs.todo.focus();
